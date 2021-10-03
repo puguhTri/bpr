@@ -11,6 +11,6 @@ public interface AuthServiceClient {
     @PostMapping(value = "/api/users/register")
     public UserResponseModel createUser(@RequestBody UserRequestModel userRequestModel);
 
-    @PostMapping("/login")
+    @PostMapping("/users/login")
     ResponseEntity<Void> loginUser(@RequestBody LoginRequestModel loginRequestModel);
 }

@@ -12,5 +12,7 @@ public interface CustomerRepo extends CrudRepository<CustomerEntity, Long> {
 
     Optional<CustomerEntity> findByCustomerId(UUID customerId);
 
+    Optional<CustomerEntity> findByEmail(String email);
+
 
 }

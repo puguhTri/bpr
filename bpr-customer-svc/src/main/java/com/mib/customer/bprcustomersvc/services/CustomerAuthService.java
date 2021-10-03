@@ -1,14 +1,18 @@
 package com.mib.customer.bprcustomersvc.services;
 
+import com.mib.customer.bprcustomersvc.constans.DefaultMessage;
+import com.mib.customer.bprcustomersvc.dto.request.LoginRequest;
 import com.mib.customer.bprcustomersvc.dto.request.PasswordSettingRequest;
 import com.mib.customer.bprcustomersvc.dto.request.RegisterRequest;
 import com.mib.customer.bprcustomersvc.dto.request.VerifyRequest;
+import com.mib.customer.bprcustomersvc.dto.response.LoginResponse;
 import com.mib.customer.bprcustomersvc.dto.response.PasswordSettingResponse;
 import com.mib.customer.bprcustomersvc.dto.response.RegisterResponse;
 import com.mib.customer.bprcustomersvc.dto.response.VerifyResponse;
 import com.mib.customer.bprcustomersvc.entities.CustomerOtpEntity;
 import com.mib.customer.bprcustomersvc.exceptions.FlowException;
 import com.mib.customer.bprcustomersvc.integration.auth.AuthServiceClient;
+import com.mib.customer.bprcustomersvc.integration.auth.LoginRequestModel;
 import com.mib.customer.bprcustomersvc.integration.auth.UserRequestModel;
 import com.mib.customer.bprcustomersvc.integration.auth.UserResponseModel;
 import com.mib.customer.bprcustomersvc.mapper.CustomerAuthMapper;
@@ -16,6 +20,7 @@ import com.mib.customer.bprcustomersvc.repositories.CustomerOtpRepo;
 import com.mib.customer.bprcustomersvc.repositories.CustomerRepo;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -76,8 +81,8 @@ public class CustomerAuthService {
 
         UserRequestModel userRequestModel = new UserRequestModel();
         userRequestModel.setPassword(passwordSettingRequest.getPassword());
-        userRequestModel.setEmail(passwordSettingRequest.getEmail());
-        userRequestModel.setFirstName(passwordSettingRequest.getName());
+        userRequestModel.setEmail(customerEntity.getEmail());
+        userRequestModel.setFirstName(customerEntity.getName());
         UserResponseModel userResponseModel = authServiceClient.createUser(userRequestModel);
 
         customerEntity.setUserId(UUID.fromString(userResponseModel.getUserId()));
@@ -91,9 +96,29 @@ public class CustomerAuthService {
     }
 
 
+    public LoginResponse login(LoginRequest loginRequest) {
+        var customerEntity = customerRepo.findByEmail(loginRequest.getEmail()).orElseThrow(() -> (new FlowException(DefaultMessage.NOT_FOUND)));
+
+        ResponseEntity<Void> response = authServiceClient.loginUser(LoginRequestModel.builder()
+                .email(loginRequest.getEmail())
+                .password(loginRequest.getPassword())
+                .build());
+
+        String token = response.getHeaders().getFirst("token");
+        String expireIn = response.getHeaders().getFirst("expire_in");
+
+        return LoginResponse.builder()
+                .name(customerEntity.getName())
+                .customerId(customerEntity.getCustomerId())
+                .accessToken(token)
+                .expireIn(expireIn)
+                .build();
+    }
 
 
-    /**======= private methode, function */
+    /**
+     * ======= private methode, function
+     */
 
     private char[] generateOtp(int len) {
         String numbers = "0123456789";

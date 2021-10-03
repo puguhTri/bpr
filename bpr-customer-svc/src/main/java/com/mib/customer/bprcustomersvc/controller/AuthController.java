@@ -1,12 +1,10 @@
 package com.mib.customer.bprcustomersvc.controller;
 
+import com.mib.customer.bprcustomersvc.dto.request.LoginRequest;
 import com.mib.customer.bprcustomersvc.dto.request.PasswordSettingRequest;
 import com.mib.customer.bprcustomersvc.dto.request.RegisterRequest;
 import com.mib.customer.bprcustomersvc.dto.request.VerifyRequest;
-import com.mib.customer.bprcustomersvc.dto.response.GeneralResponse;
-import com.mib.customer.bprcustomersvc.dto.response.PasswordSettingResponse;
-import com.mib.customer.bprcustomersvc.dto.response.RegisterResponse;
-import com.mib.customer.bprcustomersvc.dto.response.VerifyResponse;
+import com.mib.customer.bprcustomersvc.dto.response.*;
 import com.mib.customer.bprcustomersvc.services.CustomerAuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth/")
+@RequestMapping("/auth/")
 @AllArgsConstructor
 public class AuthController {
 
@@ -51,5 +49,12 @@ public class AuthController {
     public GeneralResponse<PasswordSettingResponse> verifyOtp(@RequestBody PasswordSettingRequest passwordSettingRequest) {
         PasswordSettingResponse passwordSettingResponse = customerAuthService.setPassword(passwordSettingRequest);
         return new GeneralResponse<PasswordSettingResponse>().success(passwordSettingResponse);
+    }
+
+    @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public GeneralResponse<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+        LoginResponse loginResponse = customerAuthService.login(loginRequest);
+        return new GeneralResponse<LoginResponse>().success(loginResponse);
     }
 }
