@@ -8,12 +8,11 @@ import java.util.UUID;
 
 @Data
 @Builder
-public class RegisterResponse {
+public class PasswordSettingResponse {
 
     @JsonProperty(value = "customer_id")
     private UUID customerId;
+    private String name;
     private String email;
-    @JsonProperty(value = "phone_number")
-    private String phoneNumber;
-    private String otp;
+
 }

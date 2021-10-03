@@ -1,9 +1,11 @@
 package com.mib.auth.bprauthsvc.entities;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @Entity
@@ -25,4 +27,9 @@ public class UserEntity implements Serializable {
 
     private String userId;
     private String password;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
+    private Date createdAt;
+
 }
