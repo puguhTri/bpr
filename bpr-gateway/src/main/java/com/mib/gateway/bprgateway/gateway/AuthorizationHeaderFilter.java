@@ -1,9 +1,11 @@
 package com.mib.gateway.bprgateway.gateway;
 
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -12,7 +14,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 
 import io.jsonwebtoken.Jwts;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.StandardCharsets;
 
 
 @Component
@@ -54,7 +59,19 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 		ServerHttpResponse response = exchange.getResponse();
 		response.setStatusCode(httpStatus);
 
-		return response.setComplete();
+		GeneralResponse  generalResponse = new GeneralResponse();
+		generalResponse.setStatus("03");
+		generalResponse.setMessage(err);
+
+		Gson gson = new Gson();
+		var res = gson.toJson(generalResponse);
+
+
+		byte[] bytes = res.getBytes(StandardCharsets.UTF_8);
+		DataBuffer buffer = exchange.getResponse().bufferFactory().wrap(bytes);
+
+
+		return response.writeWith(Flux.just(buffer));
 	}
 
 	private boolean isJwtValid(String jwt) {

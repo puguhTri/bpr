@@ -1,6 +1,7 @@
 package com.mib.customer.bprcustomersvc.exceptions;
 
 import com.mib.customer.bprcustomersvc.dto.response.GeneralResponse;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -73,4 +74,6 @@ public class MessageExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(HttpStatus.FAILED_DEPENDENCY)
                 .body(new GeneralResponse().fail(ex));
     }
+
+
 }
