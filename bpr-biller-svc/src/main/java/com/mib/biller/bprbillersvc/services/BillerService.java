@@ -23,7 +23,7 @@ public class BillerService {
         /** todo convert request mobile to request middleware*/
 
         var billerInquiryRequest = converterRequest(billerPlnRequest.getNoPel(), billerPlnRequest.getType());
-        var plnInquiryResponse = inquiryMiddleware.processor(billerInquiryRequest);
+        var plnInquiryResponse = inquiryMiddleware.inquiryProcessor(billerInquiryRequest);
         return plnInquiryResponse;
     }
 

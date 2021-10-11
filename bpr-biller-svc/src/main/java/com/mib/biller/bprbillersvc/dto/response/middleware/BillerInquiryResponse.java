@@ -15,38 +15,38 @@ import java.io.Serializable;
 public class BillerInquiryResponse implements Serializable {
 
     @JsonProperty(value = "STAN")
-    private String stan; //number
+    private String STAN; //number
 
     @JsonProperty(value = "RETRIEVAL_REFERENCE_NUMBER")
-    private String retrievalReferenceNumber; //string
+    private String RETRIEVAL_REFERENCE_NUMBER; //string
 
     @JsonProperty(value = "TRANSMISSION_DATETIME")
-    private String transmissionDatetime; //number
+    private String TRANSMISSION_DATETIME; //number
 
     @JsonProperty(value = "AMOUNT")
-    private String amount;
+    private String AMOUNT;
 
     @JsonProperty(value = "PRIVATE_48")
-    private String private48;
+    private String PRIVATE_48;
 
     @JsonProperty(value = "PRODUCT_CODE")
-    private String productCode;
+    private String PRODUCT_CODE;
 
     @JsonProperty(value = "RESPONSE_CODE")
-    private String responseCode;
+    private String RESPONSE_CODE;
 
     @JsonProperty(value = "PRIVATE_59")
-    private String private59;
+    private String PRIVATE_59;
 
     @JsonProperty(value = "PRIVATE_61")
-    private String private61;
+    private String PRIVATE_61;
 
     @JsonProperty(value = "PRIVATE_63")
-    private String private63;
+    private String PRIVATE_63;
 
     @JsonProperty(value = "DEST_ACCOUNT")
-    private String destAccount;
+    private String DEST_ACCOUNT;
 
     @JsonProperty(value = "FEE_ACCOUNT")
-    private String fessAccount;
+    private String FEE_ACCOUNT;
 }
