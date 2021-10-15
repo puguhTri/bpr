@@ -7,13 +7,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class PlnBillerPaymentRequest implements Serializable {
-    @JsonProperty(value = "no_pelanggan")
-    private String noPel;
-    private Integer type;
+    private UUID code;
+
 }

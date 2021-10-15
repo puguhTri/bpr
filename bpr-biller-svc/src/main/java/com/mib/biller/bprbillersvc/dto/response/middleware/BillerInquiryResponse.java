@@ -49,4 +49,5 @@ public class BillerInquiryResponse implements Serializable {
 
     @JsonProperty(value = "FEE_ACCOUNT")
     private String FEE_ACCOUNT;
+
 }

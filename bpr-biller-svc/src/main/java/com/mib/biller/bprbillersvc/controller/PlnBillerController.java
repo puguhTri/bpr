@@ -5,6 +5,7 @@ import com.mib.biller.bprbillersvc.dto.request.mobile.PlnBillerInquiryRequest;
 import com.mib.biller.bprbillersvc.dto.request.mobile.PlnBillerPaymentRequest;
 import com.mib.biller.bprbillersvc.dto.response.middleware.BillerInquiryResponse;
 import com.mib.biller.bprbillersvc.dto.response.middleware.BillerPaymentResponse;
+import com.mib.biller.bprbillersvc.dto.response.mobile.BillerInquiryResponseMB;
 import com.mib.biller.bprbillersvc.dto.response.mobile.GeneralResponse;
 import com.mib.biller.bprbillersvc.services.BillerService;
 import lombok.AllArgsConstructor;
@@ -31,14 +32,14 @@ public class PlnBillerController {
     }
 
     @PostMapping(value = "/inquiry", produces = MediaType.APPLICATION_JSON_VALUE)
-    public GeneralResponse<BillerInquiryResponse> inquiry(@RequestHeader(value = "Customer-Id") UUID customerId, @RequestBody PlnBillerInquiryRequest plnBillerRequest) {
-        var billerInquiryRes = billerService.plnBillerInquiry(plnBillerRequest);
-        return new GeneralResponse<BillerInquiryResponse>().success(billerInquiryRes);
+    public GeneralResponse<BillerInquiryResponseMB> inquiry(@RequestHeader(value = "Customer-Id") UUID customerId, @RequestBody PlnBillerInquiryRequest plnBillerRequest) {
+        var billerInquiryRes = billerService.plnBillerInquiry(plnBillerRequest, customerId);
+        return new GeneralResponse<BillerInquiryResponseMB>().success(billerInquiryRes);
     }
 
     @PostMapping(value = "/payment", produces = MediaType.APPLICATION_JSON_VALUE)
     public GeneralResponse<BillerPaymentResponse> payment(@RequestHeader(value = "Customer-Id") UUID customerId, @RequestBody PlnBillerPaymentRequest plnBillerPaymentRequest) {
-        var billerPaymentRes = billerService.plnBillerPayment(plnBillerPaymentRequest);
+        var billerPaymentRes = billerService.plnBillerPayment(plnBillerPaymentRequest, customerId);
         return new GeneralResponse<BillerPaymentResponse>().success(billerPaymentRes);
     }
 

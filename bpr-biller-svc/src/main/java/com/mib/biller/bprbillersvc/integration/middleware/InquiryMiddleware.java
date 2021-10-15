@@ -4,7 +4,9 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mib.biller.bprbillersvc.dto.request.middleware.BillerInquiryRequest;
+import com.mib.biller.bprbillersvc.dto.request.middleware.BillerPaymentRequest;
 import com.mib.biller.bprbillersvc.dto.response.middleware.BillerInquiryResponse;
+import com.mib.biller.bprbillersvc.dto.response.middleware.BillerPaymentResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.env.Environment;
@@ -27,7 +29,6 @@ public class InquiryMiddleware {
         log.info("payload :: " + payload);
 
         /** call api middleware*/
-        //https://fs.tokopedia.net/inventory/v1/fs/15358/product/info?shop_id=11900004&page=1&per_page=3&sort=1
         try {
             String middlewareApiUrl = environment.getProperty("middleware.api.url");
             String endpointBillerInquiry = middlewareApiUrl + "/multibillerbdki/inquiry";
@@ -44,13 +45,43 @@ public class InquiryMiddleware {
             String res = responseInquiry.getBody().replaceAll("\n", "");
             log.info("response middleware inquiry :: " + res);
             gson = new GsonBuilder().disableHtmlEscaping().create();
-              resBillerInquiry = gson.fromJson(res, BillerInquiryResponse.class);
-             log.info("res bind :: " + resBillerInquiry.getSTAN() );
+            resBillerInquiry = gson.fromJson(res, BillerInquiryResponse.class);
+            log.info("res bind :: " + resBillerInquiry.getSTAN());
         } catch (Exception e) {
-            //throw new FlowException("Connection failed  tokopedia :: " + e.getLocalizedMessage());
         }
 
         return resBillerInquiry;
     }
 
+    public BillerPaymentResponse paymentProcessor(BillerPaymentRequest billerPaymentRequest) {
+        BillerPaymentResponse resBillerPayment = null;
+        Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
+        String payload = gson.toJson(billerPaymentRequest);
+        log.info("payload :: " + payload);
+
+        /** call api middleware*/
+        try {
+            String middlewareApiUrl = environment.getProperty("middleware.api.url");
+            String endpointBillerInquiry = middlewareApiUrl + "/multibillerbdki/payment";
+
+
+            HttpHeaders headersUpdateStock = new HttpHeaders();
+            //headersUpdateStock.setBearerAuth(accessToken);
+            headersUpdateStock.setContentType(MediaType.APPLICATION_JSON);
+
+            HttpEntity<String> requestPayment = new HttpEntity<>(headersUpdateStock);
+            ResponseEntity<String> responsePayment = restTemplate.exchange(endpointBillerInquiry, HttpMethod.POST, requestPayment, String.class);
+
+
+            String res = responsePayment.getBody().replaceAll("\n", "").trim();
+            log.info("response middleware payment :: " + res);
+            gson = new GsonBuilder().disableHtmlEscaping().create();
+            resBillerPayment = gson.fromJson(res, BillerPaymentResponse.class);
+            log.info("res bind :: " + resBillerPayment.getPRODUCT_CODE());
+        } catch (Exception e) {
+            log.error("BillerPaymentResponse paymentProcessor" + e.getMessage());
+        }
+
+        return resBillerPayment;
+    }
 }

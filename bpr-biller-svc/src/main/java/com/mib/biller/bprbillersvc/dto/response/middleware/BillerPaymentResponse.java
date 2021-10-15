@@ -13,43 +13,43 @@ import lombok.NoArgsConstructor;
 public class BillerPaymentResponse {
 
     @JsonProperty(value = "STAN")
-    private String stan;
+    private String STAN;
 
     @JsonProperty(value = "RETRIEVAL_REFERENCE_NUMBER")
-    private String retrievalReferenceNumber;
+    private String RETRIEVAL_REFERENCE_NUMBER;
 
     @JsonProperty(value = "AMOUNT")
-    private String amount;
+    private String AMOUNT;
 
     @JsonProperty(value = "TRANSMISSION_DATETIME")
-    private String transmissionDatetime;
+    private String TRANSMISSION_DATETIME;
 
     @JsonProperty(value = "PRIVATE_48")
-    private String private48;
+    private String PRIVATE_48;
 
     @JsonProperty(value = "PRIVATE_59")
-    private String private59;
+    private String PRIVATE_59;
 
     @JsonProperty(value = "PRIVATE_63")
-    private String private63;
+    private String PRIVATE_63;
 
     @JsonProperty(value = "PRODUCT_CODE")
-    private String productCode;
+    private String PRODUCT_CODE;
 
     @JsonProperty(value = "DEST_ACCOUNT")
-    private String descAccount;
+    private String DEST_ACCOUNT;
 
     @JsonProperty(value = "FEE_ACCOUNT")
-    private String feeAccount;
+    private String FEE_ACCOUNT;
 
     @JsonProperty(value = "SRC_ACCOUNT")
-    private String srcAccount;
+    private String SRC_ACCOUNT;
 
     @JsonProperty(value = "RESPONSE_CODE")
-    private String responseCode;
+    private String RESPONSE_CODE;
 
     @JsonProperty(value = "PRIVATE_61")
-    private String private61;
+    private String PRIVATE_61;
 
 
 }
