@@ -5,6 +5,6 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class KaiBillerPaymentRequest {
+public class JakoneBillerPaymentRequest {
     private UUID code;
 }

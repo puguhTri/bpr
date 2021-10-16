@@ -21,6 +21,7 @@ public class Transaction extends BaseEntity {
     private UUID customerId;
     private String type;
     private String idPelanggan;//id pelanggan || kode bayar etc
+    private String status;
 
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")

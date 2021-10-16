@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -21,7 +22,7 @@ public class PdamBillerController {
     private final BillerService billerService;
 
     @PostMapping(value = "/inquiry", produces = MediaType.APPLICATION_JSON_VALUE)
-    public GeneralResponse<BillerInquiryResponseMB> inquiry(@RequestHeader(value = "Customer-Id") UUID customerId, @RequestBody PdamBillerInquiryRequest pdamBillerRequest) {
+    public GeneralResponse<BillerInquiryResponseMB> inquiry(@RequestHeader(value = "Customer-Id") UUID customerId,@Valid @RequestBody PdamBillerInquiryRequest pdamBillerRequest) {
         var billerInquiryRes = billerService.pdamBillerInquiry(pdamBillerRequest, customerId);
         return new GeneralResponse<BillerInquiryResponseMB>().success(billerInquiryRes);
     }

@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -32,7 +33,7 @@ public class PlnBillerController {
     }
 
     @PostMapping(value = "/inquiry", produces = MediaType.APPLICATION_JSON_VALUE)
-    public GeneralResponse<BillerInquiryResponseMB> inquiry(@RequestHeader(value = "Customer-Id") UUID customerId, @RequestBody PlnBillerInquiryRequest plnBillerRequest) {
+    public GeneralResponse<BillerInquiryResponseMB> inquiry(@RequestHeader(value = "Customer-Id") UUID customerId,@Valid @RequestBody PlnBillerInquiryRequest plnBillerRequest) {
         var billerInquiryRes = billerService.plnBillerInquiry(plnBillerRequest, customerId);
         return new GeneralResponse<BillerInquiryResponseMB>().success(billerInquiryRes);
     }

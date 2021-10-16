@@ -1,8 +1,7 @@
 package com.mib.biller.bprbillersvc.controller;
 
-import com.mib.biller.bprbillersvc.dto.request.mobile.TelkomBillerInquiryRequest;
-import com.mib.biller.bprbillersvc.dto.request.mobile.TelkomBillerPaymentRequest;
-import com.mib.biller.bprbillersvc.dto.response.middleware.BillerInquiryResponse;
+import com.mib.biller.bprbillersvc.dto.request.mobile.JakoneBillerInquiryRequest;
+import com.mib.biller.bprbillersvc.dto.request.mobile.JakoneBillerPaymentRequest;
 import com.mib.biller.bprbillersvc.dto.response.middleware.BillerPaymentResponse;
 import com.mib.biller.bprbillersvc.dto.response.mobile.BillerInquiryResponseMB;
 import com.mib.biller.bprbillersvc.dto.response.mobile.GeneralResponse;
@@ -15,21 +14,21 @@ import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "/api/telkom/")
+@RequestMapping(value = "/api/jakone/")
 @AllArgsConstructor
-public class TelkomBillerController {
+public class JakoneBillerController {
 
     private final BillerService billerService;
 
     @PostMapping(value = "/inquiry", produces = MediaType.APPLICATION_JSON_VALUE)
-    public GeneralResponse<BillerInquiryResponseMB> inquiry(@RequestHeader(value = "Customer-Id") UUID customerId,@Valid @RequestBody TelkomBillerInquiryRequest telkomBillerRequest) {
-        var billerInquiryRes = billerService.telkomBillerInquiry(telkomBillerRequest, customerId);
+    public GeneralResponse<BillerInquiryResponseMB> inquiry(@RequestHeader(value = "Customer-Id") UUID customerId, @Valid @RequestBody JakoneBillerInquiryRequest jackoneBillerRequest) {
+        var billerInquiryRes = billerService.jackoneBillerInquiry(jackoneBillerRequest, customerId);
         return new GeneralResponse<BillerInquiryResponseMB>().success(billerInquiryRes);
     }
 
     @PostMapping(value = "/payment", produces = MediaType.APPLICATION_JSON_VALUE)
-    public GeneralResponse<BillerPaymentResponse> payment(@RequestHeader(value = "Customer-Id") UUID customerId, @RequestBody TelkomBillerPaymentRequest telkomBillerPaymentRequest) {
-        var billerPaymentRes = billerService.telkomBillerPayment(telkomBillerPaymentRequest, customerId);
+    public GeneralResponse<BillerPaymentResponse> payment(@RequestHeader(value = "Customer-Id") UUID customerId, @RequestBody JakoneBillerPaymentRequest jackoneBillerPaymentRequest) {
+        var billerPaymentRes = billerService.jackoneBillerPayment(jackoneBillerPaymentRequest, customerId);
         return new GeneralResponse<BillerPaymentResponse>().success(billerPaymentRes);
     }
 }

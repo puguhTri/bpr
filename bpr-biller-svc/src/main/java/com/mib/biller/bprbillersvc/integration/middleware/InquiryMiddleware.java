@@ -7,6 +7,7 @@ import com.mib.biller.bprbillersvc.dto.request.middleware.BillerInquiryRequest;
 import com.mib.biller.bprbillersvc.dto.request.middleware.BillerPaymentRequest;
 import com.mib.biller.bprbillersvc.dto.response.middleware.BillerInquiryResponse;
 import com.mib.biller.bprbillersvc.dto.response.middleware.BillerPaymentResponse;
+import com.mib.biller.bprbillersvc.exceptions.FlowException;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.env.Environment;
@@ -48,6 +49,7 @@ public class InquiryMiddleware {
             resBillerInquiry = gson.fromJson(res, BillerInquiryResponse.class);
             log.info("res bind :: " + resBillerInquiry.getSTAN());
         } catch (Exception e) {
+            throw new FlowException("Gagal koneksi ke middleware");
         }
 
         return resBillerInquiry;
@@ -79,7 +81,7 @@ public class InquiryMiddleware {
             resBillerPayment = gson.fromJson(res, BillerPaymentResponse.class);
             log.info("res bind :: " + resBillerPayment.getPRODUCT_CODE());
         } catch (Exception e) {
-            log.error("BillerPaymentResponse paymentProcessor" + e.getMessage());
+            throw new FlowException("Gagal koneksi ke middleware");
         }
 
         return resBillerPayment;
