@@ -11,7 +11,6 @@ import javax.validation.constraints.Size;
 @Setter
 public class UserRequestModel {
 
-	@NotNull(message = "First name cannot be null")
 	@Size(min = 2)
 	private String firstName;
 	private String lastName;
@@ -19,8 +18,10 @@ public class UserRequestModel {
 	@NotNull
 	@Size(min = 8, max = 16)
 	private String password;
-	
+
 	@NotNull
+	private String username;
+
 	@Email
 	private String email;
 

@@ -1,0 +1,18 @@
+version: '3'
+services:
+  bpr-eureka:
+    image: 369693/ptw-eureka-server:dev-2
+    ports:
+      - "8010:8010"
+  users-ws:
+    image: 369693/ptw-auth-svc:dev-2
+    links:
+      - bpr-eureka
+  api-gateway:
+    image: 369693/ptw-gateway:dev-2
+    ports:
+      - "8011:8011"
+    links:
+      - bpr-eureka
+    depends_on:
+      - users-ws

@@ -15,4 +15,5 @@ public class PasswordSettingRequest {
     @JsonProperty(value = "password_confirm")
     private String passwordConfirm;
     private String email;
+    private String username;
 }

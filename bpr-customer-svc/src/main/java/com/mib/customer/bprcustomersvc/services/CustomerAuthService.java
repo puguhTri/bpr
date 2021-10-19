@@ -82,10 +82,13 @@ public class CustomerAuthService {
         UserRequestModel userRequestModel = new UserRequestModel();
         userRequestModel.setPassword(passwordSettingRequest.getPassword());
         userRequestModel.setEmail(customerEntity.getEmail());
+        userRequestModel.setUsername(passwordSettingRequest.getUsername()
+        );
         userRequestModel.setFirstName(customerEntity.getName());
         UserResponseModel userResponseModel = authServiceClient.createUser(userRequestModel);
 
         customerEntity.setUserId(UUID.fromString(userResponseModel.getUserId()));
+        customerEntity.setUsername(passwordSettingRequest.getUsername());
         customerRepo.save(customerEntity);
 
         return PasswordSettingResponse.builder()
@@ -97,9 +100,10 @@ public class CustomerAuthService {
 
 
     public LoginResponse login(LoginRequest loginRequest) {
-        var customerEntity = customerRepo.findByEmail(loginRequest.getEmail()).orElseThrow(() -> (new FlowException(DefaultMessage.NOT_FOUND)));
+        var customerEntity = customerRepo.findByUsername(loginRequest.getUsername()).orElseThrow(() -> (new FlowException(DefaultMessage.NOT_FOUND)));
 
         ResponseEntity<Void> response = authServiceClient.loginUser(LoginRequestModel.builder()
+                .username(loginRequest.getUsername())
                 .email(loginRequest.getEmail())
                 .password(loginRequest.getPassword())
                 .build());

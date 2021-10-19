@@ -1,0 +1,12 @@
+package com.mib.accountinfo.bpraccountinfosvc.entites;
+
+import com.mib.accountinfo.bpraccountinfosvc.base.BaseEntity;
+
+import javax.persistence.Entity;
+import java.util.UUID;
+
+@Entity
+public class Customer extends BaseEntity {
+    private UUID uuid;
+    private String status;
+}

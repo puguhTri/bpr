@@ -13,6 +13,7 @@ public class UserDto implements Serializable {
     private String email;
     private String password;
     private String userId;
+    private String username;
 
 
 }

@@ -6,12 +6,13 @@ import lombok.Data;
 @Data
 public class RegisterRequest {
 
-    private String name;
     @JsonProperty(value = "account_number")
     private String accountNumber;
-    private String email;
+
+    @JsonProperty(value = "mother_name")
+    private String motherName;
+
     @JsonProperty(value = "phone_number")
     private String phoneNumber;
-    @JsonProperty(value = "identity_number")
-    private String identityNumber;
 }
+

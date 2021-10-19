@@ -16,9 +16,10 @@ public class CustomerEntity extends BaseEntity {
     private UUID customerId;
     private UUID userId;
     private String name;
+    private String motherName;
     private String accountNumber;
     private String email;
     private String phoneNumber;
     private String identityNumber;
-
+    private String username;
 }

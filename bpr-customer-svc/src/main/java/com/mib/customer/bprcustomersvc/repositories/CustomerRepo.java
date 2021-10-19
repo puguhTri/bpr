@@ -14,5 +14,8 @@ public interface CustomerRepo extends CrudRepository<CustomerEntity, Long> {
 
     Optional<CustomerEntity> findByEmail(String email);
 
+    Optional<CustomerEntity> findByUsername(String username);
+
+
 
 }
