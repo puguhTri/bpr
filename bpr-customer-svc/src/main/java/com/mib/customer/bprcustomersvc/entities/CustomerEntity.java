@@ -22,4 +22,5 @@ public class CustomerEntity extends BaseEntity {
     private String phoneNumber;
     private String identityNumber;
     private String username;
+    private Boolean hasPin;
 }

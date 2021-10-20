@@ -1,14 +1,10 @@
 package com.mib.customer.bprcustomersvc.services;
 
 import com.mib.customer.bprcustomersvc.constans.DefaultMessage;
-import com.mib.customer.bprcustomersvc.dto.request.LoginRequest;
-import com.mib.customer.bprcustomersvc.dto.request.PasswordSettingRequest;
-import com.mib.customer.bprcustomersvc.dto.request.RegisterRequest;
-import com.mib.customer.bprcustomersvc.dto.request.VerifyRequest;
-import com.mib.customer.bprcustomersvc.dto.response.LoginResponse;
-import com.mib.customer.bprcustomersvc.dto.response.PasswordSettingResponse;
-import com.mib.customer.bprcustomersvc.dto.response.RegisterResponse;
-import com.mib.customer.bprcustomersvc.dto.response.VerifyResponse;
+import com.mib.customer.bprcustomersvc.dto.request.*;
+import com.mib.customer.bprcustomersvc.dto.response.*;
+import com.mib.customer.bprcustomersvc.entities.CustomerEntity;
+import com.mib.customer.bprcustomersvc.entities.CustomerMpinEntity;
 import com.mib.customer.bprcustomersvc.entities.CustomerOtpEntity;
 import com.mib.customer.bprcustomersvc.exceptions.FlowException;
 import com.mib.customer.bprcustomersvc.integration.auth.AuthServiceClient;
@@ -16,6 +12,7 @@ import com.mib.customer.bprcustomersvc.integration.auth.LoginRequestModel;
 import com.mib.customer.bprcustomersvc.integration.auth.UserRequestModel;
 import com.mib.customer.bprcustomersvc.integration.auth.UserResponseModel;
 import com.mib.customer.bprcustomersvc.mapper.CustomerAuthMapper;
+import com.mib.customer.bprcustomersvc.repositories.CustomerMpinRepo;
 import com.mib.customer.bprcustomersvc.repositories.CustomerOtpRepo;
 import com.mib.customer.bprcustomersvc.repositories.CustomerRepo;
 import lombok.AllArgsConstructor;
@@ -23,6 +20,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Random;
 import java.util.UUID;
@@ -37,6 +35,7 @@ public class CustomerAuthService {
     private final CustomerOtpRepo customerOtpRepo;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthServiceClient authServiceClient;
+    private final CustomerMpinRepo customerMpinRepo;
 
     public RegisterResponse register(RegisterRequest registerRequest) {
         var customerEntity = customerMapper.toCustomer(registerRequest);
@@ -99,6 +98,26 @@ public class CustomerAuthService {
     }
 
 
+    @Transactional
+    public MpinResponse setMpin(MpinRequest mpinRequest) {
+        CustomerEntity customerEntity = customerRepo.findByCustomerId(mpinRequest.getCustomerId()).orElseThrow();
+        if (mpinRequest.getMpin().equals(mpinRequest.getMpinConfirm())) {
+            CustomerMpinEntity customerMpinEntity = new CustomerMpinEntity();
+            customerMpinEntity.setCustomer(customerEntity);
+            customerMpinEntity.setPin(mpinRequest.getMpin().toString());
+            customerMpinEntity.setPinEncryption(bCryptPasswordEncoder.encode(customerMpinEntity.getPin()));
+            customerMpinRepo.save(customerMpinEntity);
+
+            customerEntity.setHasPin(true);
+            customerRepo.save(customerEntity);
+            return MpinResponse.builder()
+                    .customerId(customerEntity.getCustomerId())
+                    .build();
+        } else {
+            throw new FlowException("Pin tidak sama");
+        }
+    }
+
     public LoginResponse login(LoginRequest loginRequest) {
         var customerEntity = customerRepo.findByUsername(loginRequest.getUsername()).orElseThrow(() -> (new FlowException(DefaultMessage.NOT_FOUND)));
 
@@ -116,6 +135,7 @@ public class CustomerAuthService {
                 .customerId(customerEntity.getCustomerId())
                 .accessToken(token)
                 .expireIn(expireIn)
+                .hasPin(customerEntity.getHasPin())
                 .build();
     }
 

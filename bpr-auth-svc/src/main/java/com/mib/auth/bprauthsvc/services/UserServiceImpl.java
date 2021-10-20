@@ -36,6 +36,11 @@ public class UserServiceImpl implements UserServices {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
+        if (userDto.getScope() == null || userDto.getScope().isBlank() || userDto.getScope().isEmpty()){
+            userEntity.setScope("WEB");
+        }else {
+            userEntity.setScope(userDto.getScope());
+        }
         userEntity.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
 
         userRepository.save(userEntity);

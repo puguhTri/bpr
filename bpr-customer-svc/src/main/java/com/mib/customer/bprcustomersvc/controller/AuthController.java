@@ -1,9 +1,6 @@
 package com.mib.customer.bprcustomersvc.controller;
 
-import com.mib.customer.bprcustomersvc.dto.request.LoginRequest;
-import com.mib.customer.bprcustomersvc.dto.request.PasswordSettingRequest;
-import com.mib.customer.bprcustomersvc.dto.request.RegisterRequest;
-import com.mib.customer.bprcustomersvc.dto.request.VerifyRequest;
+import com.mib.customer.bprcustomersvc.dto.request.*;
 import com.mib.customer.bprcustomersvc.dto.response.*;
 import com.mib.customer.bprcustomersvc.services.CustomerAuthService;
 import lombok.AllArgsConstructor;
@@ -13,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/auth/")
@@ -50,6 +49,15 @@ public class AuthController {
         PasswordSettingResponse passwordSettingResponse = customerAuthService.setPassword(passwordSettingRequest);
         return new GeneralResponse<PasswordSettingResponse>().success(passwordSettingResponse);
     }
+
+
+    @PostMapping(value = "/set-mpin", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public GeneralResponse<MpinResponse> setMpin(@RequestBody MpinRequest mpinRequest) {
+        MpinResponse MpinResponse = customerAuthService.setMpin(mpinRequest);
+        return new GeneralResponse<MpinResponse>().success(MpinResponse);
+    }
+
 
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody

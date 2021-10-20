@@ -57,12 +57,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         UserDto userDetails = usersServices.getUserDetailsByUsername(userName);
 
-        System.out.println(":::::: " + environment.getProperty("token.secret"));
+        System.out.println(":::::: " + userDetails.getScope());
 
         Date expireIn = new Date(
                 System.currentTimeMillis() + Long.parseLong(environment.getProperty("token.expiration_time")));
 
         String token = Jwts.builder().setSubject(userDetails.getUserId())
+                .claim("SCOPE", userDetails.getScope())
                 .setExpiration(expireIn)
                 .signWith(SignatureAlgorithm.HS512, environment.getProperty("token.secret")).compact();
 

@@ -32,6 +32,8 @@ public class UserEntity implements Serializable {
     private String userId;
     private String password;
 
+    private String scope;
+
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     private Date createdAt;

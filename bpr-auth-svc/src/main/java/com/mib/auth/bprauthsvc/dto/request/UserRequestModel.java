@@ -24,6 +24,7 @@ public class UserRequestModel {
 
 	@Email
 	private String email;
+	private String scope;
 
 
 
