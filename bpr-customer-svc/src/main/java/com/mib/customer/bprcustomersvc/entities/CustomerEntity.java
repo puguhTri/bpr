@@ -23,4 +23,6 @@ public class CustomerEntity extends BaseEntity {
     private String identityNumber;
     private String username;
     private Boolean hasPin;
+
+    private Boolean status;
 }

@@ -88,6 +88,7 @@ public class CustomerAuthService {
 
         customerEntity.setUserId(UUID.fromString(userResponseModel.getUserId()));
         customerEntity.setUsername(passwordSettingRequest.getUsername());
+        customerEntity.setStatus(true);
         customerRepo.save(customerEntity);
 
         return PasswordSettingResponse.builder()
