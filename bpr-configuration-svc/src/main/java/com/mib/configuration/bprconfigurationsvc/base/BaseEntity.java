@@ -18,11 +18,12 @@ public class BaseEntity implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
+    @Column(insertable = true, updatable = false)
     private Date createdAt;
 
     @Temporal(TemporalType.TIMESTAMP)
     @UpdateTimestamp
-    @Column(insertable = false)
+    @Column(insertable = false, updatable = true)
     private Date updatedAt;
 
     private String createdBy;
