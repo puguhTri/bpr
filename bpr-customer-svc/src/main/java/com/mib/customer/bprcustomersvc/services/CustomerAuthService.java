@@ -22,6 +22,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
@@ -103,7 +104,14 @@ public class CustomerAuthService {
     public MpinResponse setMpin(MpinRequest mpinRequest) {
         CustomerEntity customerEntity = customerRepo.findByCustomerId(mpinRequest.getCustomerId()).orElseThrow();
         if (mpinRequest.getMpin().equals(mpinRequest.getMpinConfirm())) {
-            CustomerMpinEntity customerMpinEntity = new CustomerMpinEntity();
+            Optional<CustomerMpinEntity> optionalCustomerMpinEntity = customerMpinRepo.findByCustomer(customerEntity);
+            CustomerMpinEntity customerMpinEntity;
+
+            if (optionalCustomerMpinEntity.isEmpty()) {
+                customerMpinEntity = new CustomerMpinEntity();
+            } else {
+                customerMpinEntity = optionalCustomerMpinEntity.get();
+            }
             customerMpinEntity.setCustomer(customerEntity);
             customerMpinEntity.setPin(mpinRequest.getMpin().toString());
             customerMpinEntity.setPinEncryption(bCryptPasswordEncoder.encode(customerMpinEntity.getPin()));
