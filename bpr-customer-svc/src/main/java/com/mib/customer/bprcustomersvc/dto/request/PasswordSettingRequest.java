@@ -16,4 +16,8 @@ public class PasswordSettingRequest {
     private String passwordConfirm;
     private String email;
     private String username;
+
+    @JsonProperty(value = "device_id")
+    private String deviceId;
+    private String imei;
 }

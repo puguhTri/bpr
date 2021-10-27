@@ -90,6 +90,8 @@ public class CustomerAuthService {
         customerEntity.setUserId(UUID.fromString(userResponseModel.getUserId()));
         customerEntity.setUsername(passwordSettingRequest.getUsername());
         customerEntity.setStatus(true);
+        customerEntity.setDeviceId(passwordSettingRequest.getDeviceId());
+        customerEntity.setImei(passwordSettingRequest.getImei());
         customerRepo.save(customerEntity);
 
         return PasswordSettingResponse.builder()

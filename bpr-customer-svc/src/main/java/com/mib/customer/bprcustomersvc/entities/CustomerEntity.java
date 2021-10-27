@@ -25,4 +25,7 @@ public class CustomerEntity extends BaseEntity {
     private Boolean hasPin;
 
     private Boolean status;
+
+    private String deviceId;
+    private String imei;
 }
