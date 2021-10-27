@@ -65,14 +65,18 @@ public class PromoService {
     public Page<PromoListResponse> searchList(Pageable pageable) {
         Page<PromoEntity> promoEntityPage = promoRepo.searchList(pageable);
 
+
         Page<PromoListResponse> promoListResponsePage = commonMapper.mapEntityPageIntoDtoPage(promoEntityPage, PromoListResponse.class);
         return promoListResponsePage;
     }
 
     public List<PromoListResponse> listAll() {
         List<PromoEntity> all = (List<PromoEntity>) promoRepo.findAll();
-
         List<PromoListResponse> listResponse = commonMapper.mapList(all, PromoListResponse.class);
+        listResponse.stream().forEach(r -> {
+            var url = mediaRepo.findByFileId(r.getFileId()).get().getUrl();
+            r.setUrl(url);
+        });
         return listResponse;
     }
 }

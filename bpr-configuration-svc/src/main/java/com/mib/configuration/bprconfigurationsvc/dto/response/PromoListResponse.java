@@ -14,4 +14,5 @@ public class PromoListResponse {
     private String name;
     private String description;
     private String fileId;
+    private String url;
 }
