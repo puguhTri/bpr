@@ -22,6 +22,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -38,6 +39,8 @@ public class CustomerAuthService {
     private final AuthServiceClient authServiceClient;
     private final CustomerMpinRepo customerMpinRepo;
 
+    private final SmsService smsService;
+
     public RegisterResponse register(RegisterRequest registerRequest) {
         var customerEntity = customerMapper.toCustomer(registerRequest);
         customerEntity.setCustomerId(UUID.randomUUID());
@@ -52,6 +55,12 @@ public class CustomerAuthService {
         customerOtp.setCodeEncryption(bCryptPasswordEncoder.encode(otpCode));
         customerOtp.setCounter(0);
         customerOtpRepo.save(customerOtp);
+
+        try {
+            smsService.sendOtp(otpCode, customerEntity.getPhoneNumber());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return RegisterResponse.builder()
                 .customerId(customerEntity.getCustomerId())

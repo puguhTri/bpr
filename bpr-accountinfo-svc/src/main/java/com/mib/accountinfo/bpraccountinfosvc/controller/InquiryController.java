@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = "/api/account/info/")
-public class AccountInfoController {
+public class InquiryController {
 
     private final Environment environment;
 
